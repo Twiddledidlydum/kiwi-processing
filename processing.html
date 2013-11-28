@@ -16,40 +16,38 @@
  var toParse = null;
  var Ax = 0;
  var Ay = 0;
- var Az = 0;
- var Gx = 0;
- var Gy = 0;
- var Gz = 0;
+ // var Ax2 = 0;
+ // var Ay2 = 0;
 
 // Enter your device id and password here
 
 kiwisocket.on('connect', function() {
-  kiwisocket.emit('listen', {device_id: '42', password: '123'});
+  kiwisocket.emit('listen', {device_id: '47', password: '123'});
+  //kiwisocket.emit('listen', {device_id: '42', password: '123'});
 });
 
 kiwisocket.on('listen_response', function(data) {
 
-  //console.log(data);
-
   toParse = JSON.parse(data.message);
 
+  //console.log(data.message);
+
+  // if (toParse.device_id == '42') {
   Ax = parseFloat(toParse.ax);
   Ay = parseFloat(toParse.ay);
-  Az = parseFloat(toParse.az);  
-
-  Gx = parseFloat(toParse.gx);
-  Gy = parseFloat(toParse.gy);
-  Gz = parseFloat(toParse.gz);
+  // } else {
+  //     Ax2 = parseFloat(toParse.ax);
+  //     Ay2 = parseFloat(toParse.ay);
+  // }
 
 });
-
 </script>
 
 <script type="text/processing" data-processing-target="mycanvas">
 
 float radius = 50.0;
-int X, Y;
-int nX, nY;
+int X, Y;//, X2, Y2;
+int nX, nY;//, nX2, nY2;
 int delay = 2;
 
 void setup() {
@@ -59,6 +57,8 @@ void setup() {
     frameRate( 15 );
     X = 700;
     Y = 400;
+    // X2 = 200;
+    // Y2 = 400;
 
 }
 
@@ -70,22 +70,35 @@ void draw(){
     X+=Ax*16;
     Y+=Ay*16;
 
+    // Track circle to new destination
+    // X2+=Ax2*16;
+    // Y2+=Ay2*16;
+
     if(X <= 0) {
       X = X*-1
     }
-    if(X >= 800) {
-      X = X-800
+    if(X >= 1400) {
+      X = X-1400
     }
     if(Y <= 0) {
       Y = Y*-1
     }
-    if(X >= 1400) {
-      Y = Y-1400
+    if(Y >= 800) {
+      Y = Y-800
     }
 
-
-    console.log(X);
-    //console.log(nX);
+    // if(X2 <= 0) {
+    //   X2 = X2*-1
+    // }
+    // if(X2 >= 1400) {
+    //   X2 = X2-1400
+    // }
+    // if(Y2 <= 0) {
+    //   Y2 = Y2*-1
+    // }
+    // if(Y2 >= 800) {
+    //   Y2 = Y2-800
+    // }
 
     // Fill canvas grey
     background( 100 );
@@ -98,6 +111,7 @@ void draw(){
 
     // Draw circle
     ellipse( X, Y, radius, radius ); 
+    //ellipse( X2, Y2, radius, radius ); 
 
 }
 </script>
